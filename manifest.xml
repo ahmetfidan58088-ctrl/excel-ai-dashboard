@@ -7,11 +7,11 @@
   xsi:type="TaskPaneApp">
 
   <Id>2c79b35a-0d62-4f5c-a9b7-5bf5f2221c31</Id>
-  <Version>4.0.0.0</Version>
+  <Version>1.0.0.0</Version>
   <ProviderName>AI Dashboard</ProviderName>
   <DefaultLocale>tr-TR</DefaultLocale>
-  <DisplayName DefaultValue="AI Dashboard Online V4"/>
-  <Description DefaultValue="Online Excel için dashboard ve analiz üreten Office Add-in."/>
+  <DisplayName DefaultValue="AI Dashboard"/>
+  <Description DefaultValue="Excel verilerini analiz eder."/>
 
   <IconUrl DefaultValue="https://ahmetfidan58088-ctrl.github.io/excel-ai-dashboard/icons/icon-32.png"/>
   <HighResolutionIconUrl DefaultValue="https://ahmetfidan58088-ctrl.github.io/excel-ai-dashboard/icons/icon-80.png"/>
@@ -45,22 +45,12 @@
             <OfficeTab id="TabHome">
               <Group id="AIGroup">
                 <Label resid="GroupLabel"/>
-                <Icon>
-                  <bt:Image size="16" resid="Icon.16"/>
-                  <bt:Image size="32" resid="Icon.32"/>
-                  <bt:Image size="80" resid="Icon.80"/>
-                </Icon>
                 <Control xsi:type="Button" id="ShowTaskpaneButton">
                   <Label resid="TaskpaneButton.Label"/>
                   <Supertip>
                     <Title resid="TaskpaneButton.Label"/>
                     <Description resid="TaskpaneButton.Tooltip"/>
                   </Supertip>
-                  <Icon>
-                    <bt:Image size="16" resid="Icon.16"/>
-                    <bt:Image size="32" resid="Icon.32"/>
-                    <bt:Image size="80" resid="Icon.80"/>
-                  </Icon>
                   <Action xsi:type="ShowTaskpane">
                     <TaskpaneId>ButtonId1</TaskpaneId>
                     <SourceLocation resid="Taskpane.Url"/>
@@ -83,13 +73,13 @@
         <bt:Url id="Taskpane.Url" DefaultValue="https://ahmetfidan58088-ctrl.github.io/excel-ai-dashboard/taskpane.html"/>
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="GetStarted.Title" DefaultValue="AI Dashboard Online V4"/>
+        <bt:String id="GetStarted.Title" DefaultValue="AI Dashboard"/>
         <bt:String id="GroupLabel" DefaultValue="AI Dashboard"/>
         <bt:String id="TaskpaneButton.Label" DefaultValue="AI Dashboard Aç"/>
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="GetStarted.Description" DefaultValue="Online Excel için dashboard ve analiz üreten görev bölmesi eklentisi."/>
-        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Dashboard ve analiz panelini açar."/>
+        <bt:String id="GetStarted.Description" DefaultValue="Excel verilerini analiz eden eklenti."/>
+        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Dashboard panelini açar."/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>

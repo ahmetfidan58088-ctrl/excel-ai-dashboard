@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Dashboard Online V4</title>
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #18212f;
+      --muted: #667085;
+      --primary: #2458e7;
+      --good: #0f9d58;
+      --warn: #d97706;
+      --bad: #dc2626;
+      --border: #dbe3ef;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, sans-serif; background: var(--bg); color: var(--text); }
+    .wrap { padding: 14px; }
+    .hero {
+      background: linear-gradient(135deg, #2458e7, #112d88);
+      color: white;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 12px 30px rgba(36,88,231,0.25);
+      margin-bottom: 12px;
+    }
+    .hero h1 { margin: 0 0 4px 0; font-size: 20px; }
+    .hero p { margin: 0; opacity: 0.92; font-size: 12px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+    }
+    .card h2 { margin: 0 0 10px 0; font-size: 14px; }
+    .grid { display: grid; gap: 8px; }
+    .grid.two { grid-template-columns: 1fr 1fr; }
+    button {
+      width: 100%; border: none; border-radius: 10px; padding: 11px 12px; cursor: pointer;
+      font-size: 13px; font-weight: bold; color: white;
+    }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    .b1 { background: var(--primary); }
+    .b2 { background: #475467; }
+    .b3 { background: var(--good); }
+    .b4 { background: #7c3aed; }
+    .status { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+    textarea {
+      width: 100%; min-height: 72px; border: 1px solid var(--border); border-radius: 10px;
+      padding: 10px; resize: vertical; font-size: 12px; background: #fff;
+    }
+    .mono {
+      white-space: pre-wrap; line-height: 1.5; font-size: 12px; background: #fbfcff; padding: 10px;
+      border: 1px solid var(--border); border-radius: 10px; min-height: 120px;
+    }
+    .pill { display: inline-block; padding: 4px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+    .pill.good { color: #065f46; background: #d1fae5; }
+    .pill.warn { color: #92400e; background: #fef3c7; }
+    .pill.bad { color: #991b1b; background: #fee2e2; }
+    ul { margin: 0; padding-left: 18px; }
+    li { margin-bottom: 6px; font-size: 12px; }
+    .small { color: var(--muted); font-size: 11px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>AI Dashboard Online V4</h1>
+      <p>Online Excel için dashboard + analiz sürümü</p>
+    </div>
+
+    <div class="card">
+      <div id="status" class="status">Hazır.</div>
+      <div class="grid two">
+        <button id="readBtn" class="b1">1) Veriyi Oku</button>
+        <button id="analyzeBtn" class="b2">2) Analiz Yap</button>
+        <button id="dashboardBtn" class="b3">3) Dashboard Kur</button>
+        <button id="writeBtn" class="b4">4) Sonucu Yaz</button>
+      </div>
+      <div class="small" style="margin-top:8px;">Sıra: Veriyi Oku → Analiz Yap → Dashboard Kur → Sonucu Yaz</div>
+    </div>
+
+    <div class="card">
+      <h2>Ek not</h2>
+      <textarea id="notes" placeholder="Örn: Bayi stok riski ve tahsilat tarafını vurgula."></textarea>
+    </div>
+
+    <div class="card">
+      <h2>Hızlı durum</h2>
+      <div id="summaryBadges"></div>
+    </div>
+
+    <div class="card">
+      <h2>Sonuç</h2>
+      <div id="result" class="mono">Henüz analiz yapılmadı.</div>
+    </div>
+
+    <div class="card">
+      <h2>Bu sürüm ne üretir?</h2>
+      <ul>
+        <li>AI_ANALYSIS</li>
+        <li>Dashboard_Data</li>
+        <li>EXECUTIVE_DASHBOARD</li>
+        <li>SALES_DASHBOARD</li>
+        <li>STOCK_DASHBOARD</li>
+        <li>FINANCE_DASHBOARD</li>
+        <li>DEALER_DASHBOARD</li>
+        <li>ANALYST_SCREEN</li>
+      </ul>
+    </div>
+  </div>
+  <script src="taskpane.js"></script>
+</body>
+</html>

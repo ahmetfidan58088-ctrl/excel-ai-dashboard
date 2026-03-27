@@ -1,97 +1,173 @@
-let cachedData = null;
-let cachedAnalysis = null;
-
-Office.onReady(() => {
-    console.log("Office hazır");
-
-    document.getElementById("readBtn").onclick = readData;
-    document.getElementById("analyzeBtn").onclick = analyze;
-    document.getElementById("buildBtn").onclick = buildDashboard;
-    document.getElementById("writeBtn").onclick = writeResult;
+// Office.js hazır olduğunda çalışır
+Office.onReady((info) => {
+    console.log("Office.js hazır. Host:", info.host);
+    
+    // Butonu bul
+    const analyzeBtn = document.getElementById("analyzeBtn");
+    
+    if (analyzeBtn) {
+        console.log("Buton bulundu, event ekleniyor...");
+        analyzeBtn.addEventListener("click", analyzeData);
+    } else {
+        console.error("Buton bulunamadı! ID kontrol edin.");
+        showError("Buton bulunamadı. Lütfen sayfayı yenileyin.");
+    }
 });
 
-// 1️⃣ VERİ OKU
-async function readData() {
-    await Excel.run(async (context) => {
-        const sheet = context.workbook.worksheets.getActiveWorksheet();
-        const range = sheet.getUsedRange();
-        range.load("values");
-        await context.sync();
-
-        cachedData = range.values;
-        alert("Veri okundu ✔️");
-    });
+/**
+ * Ana analiz fonksiyonu
+ */
+async function analyzeData() {
+    console.log("Butona tıklandı! Analiz başlıyor...");
+    
+    // UI durumunu güncelle
+    showLoading(true);
+    hideResult();
+    hideError();
+    
+    try {
+        // Excel API'sini çalıştır
+        await Excel.run(async (context) => {
+            console.log("Excel.run başladı");
+            
+            // Aktif çalışma sayfasını al
+            const sheet = context.workbook.worksheets.getActiveWorksheet();
+            sheet.load("name");
+            
+            // Kullanılan tüm hücreleri al
+            const usedRange = sheet.getUsedRange();
+            usedRange.load("values, rowCount, columnCount, address");
+            
+            // Veriyi al
+            await context.sync();
+            
+            console.log("Sayfa adı:", sheet.name);
+            console.log("Veri aralığı:", usedRange.address);
+            console.log("Satır sayısı:", usedRange.rowCount);
+            console.log("Sütun sayısı:", usedRange.columnCount);
+            
+            // Veri kontrolü
+            if (!usedRange.values || usedRange.values.length === 0) {
+                throw new Error("Hiç veri bulunamadı. Lütfen veri içeren bir sayfa seçin.");
+            }
+            
+            // Başlıkları al (ilk satır)
+            const headers = usedRange.values[0];
+            const dataRows = usedRange.values.slice(1);
+            
+            // Sayısal verileri bul (Adet sütunu ara)
+            let adetIndex = -1;
+            headers.forEach((header, idx) => {
+                const h = String(header || "").toLowerCase();
+                if (h.includes("adet") || h.includes("miktar") || h.includes("quantity")) {
+                    adetIndex = idx;
+                }
+            });
+            
+            // Toplam adet hesapla
+            let totalAdet = 0;
+            let adetCount = 0;
+            
+            if (adetIndex !== -1) {
+                for (let i = 0; i < dataRows.length; i++) {
+                    const val = parseFloat(dataRows[i][adetIndex]);
+                    if (!isNaN(val)) {
+                        totalAdet += val;
+                        adetCount++;
+                    }
+                }
+            }
+            
+            // Sonucu göster
+            const resultText = `
+                ✅ ANALİZ TAMAMLANDI!
+                
+                📄 Sayfa: ${sheet.name}
+                📍 Aralık: ${usedRange.address}
+                📊 Satır: ${usedRange.rowCount}
+                📈 Sütun: ${usedRange.columnCount}
+                
+                🔍 Başlıklar: ${headers.join(", ")}
+                
+                ${adetIndex !== -1 ? `
+                📦 Adet Sütunu: ${headers[adetIndex]}
+                📊 Toplam Adet: ${totalAdet}
+                📋 Adet Sayısı: ${adetCount}
+                📈 Ortalama Adet: ${(totalAdet / adetCount).toFixed(2)}
+                ` : "⚠️ 'Adet' sütunu bulunamadı. Lütfen bir adet/miktar sütunu ekleyin."}
+                
+                💡 İpucu: AI_ANALYSIS sayfası oluşturulacak.
+            `;
+            
+            showResult(resultText);
+            
+            // İleride AI_ANALYSIS sayfası oluşturulacak
+            console.log("Analiz başarıyla tamamlandı!");
+        });
+        
+    } catch (error) {
+        console.error("Hata oluştu:", error);
+        showError("Hata: " + error.message);
+    } finally {
+        showLoading(false);
+    }
 }
 
-// 2️⃣ ANALİZ
-function analyze() {
-    if (!cachedData) {
-        alert("Önce veri oku");
-        return;
+/**
+ * UI Yardımcı Fonksiyonları
+ */
+function showLoading(show) {
+    const loading = document.getElementById("loading");
+    const analyzeBtn = document.getElementById("analyzeBtn");
+    
+    if (loading) {
+        if (show) {
+            loading.classList.remove("hidden");
+        } else {
+            loading.classList.add("hidden");
+        }
     }
-
-    const headers = cachedData[0];
-    const rows = cachedData.slice(1);
-
-    let total = 0;
-
-    rows.forEach(r => {
-        const val = parseFloat(r[2]);
-        if (!isNaN(val)) total += val;
-    });
-
-    cachedAnalysis = {
-        total: total,
-        rowCount: rows.length
-    };
-
-    alert("Analiz tamam ✔️");
+    
+    if (analyzeBtn) {
+        analyzeBtn.disabled = show;
+        if (show) {
+            analyzeBtn.textContent = "⏳ Analiz Ediliyor...";
+        } else {
+            analyzeBtn.textContent = "📊 Veriyi Analiz Et";
+        }
+    }
 }
 
-// 3️⃣ DASHBOARD KUR
-async function buildDashboard() {
-    if (!cachedAnalysis) {
-        alert("Önce analiz yap");
-        return;
+function showResult(text) {
+    const resultArea = document.getElementById("resultArea");
+    const resultText = document.getElementById("resultText");
+    
+    if (resultArea && resultText) {
+        resultText.textContent = text;
+        resultArea.classList.remove("hidden");
     }
-
-    await Excel.run(async (context) => {
-        const sheet = context.workbook.worksheets.add("EXECUTIVE_DASHBOARD");
-
-        const data = [
-            ["KPI", "Değer"],
-            ["Toplam Satış", cachedAnalysis.total],
-            ["Satır Sayısı", cachedAnalysis.rowCount]
-        ];
-
-        const range = sheet.getRange("A1:B3");
-        range.values = data;
-
-        await context.sync();
-    });
-
-    alert("Dashboard oluşturuldu 🚀");
 }
 
-// 4️⃣ SONUÇ YAZ
-async function writeResult() {
-    if (!cachedAnalysis) {
-        alert("Önce analiz yap");
-        return;
+function hideResult() {
+    const resultArea = document.getElementById("resultArea");
+    if (resultArea) {
+        resultArea.classList.add("hidden");
     }
+}
 
-    await Excel.run(async (context) => {
-        const sheet = context.workbook.worksheets.add("AI_ANALYSIS");
+function showError(message) {
+    const errorArea = document.getElementById("errorArea");
+    const errorText = document.getElementById("errorText");
+    
+    if (errorArea && errorText) {
+        errorText.textContent = message;
+        errorArea.classList.remove("hidden");
+    }
+}
 
-        const data = [
-            ["Toplam", cachedAnalysis.total],
-            ["Satır", cachedAnalysis.rowCount]
-        ];
-
-        sheet.getRange("A1:B2").values = data;
-
-        await context.sync();
-    });
-
-    alert("Sonuç yazıldı 📄");
+function hideError() {
+    const errorArea = document.getElementById("errorArea");
+    if (errorArea) {
+        errorArea.classList.add("hidden");
+    }
 }

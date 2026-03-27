@@ -13,13 +13,12 @@
   <DisplayName DefaultValue="AI Dashboard Online V4"/>
   <Description DefaultValue="Online Excel için dashboard ve analiz üreten Office Add-in."/>
 
-  <!-- IMPORTANT: Replace all __BASE_URL__ values with your real HTTPS host before sideloading. -->
-  <IconUrl DefaultValue="__BASE_URL__/icons/icon-32.png"/>
-  <HighResolutionIconUrl DefaultValue="__BASE_URL__/icons/icon-80.png"/>
-  <SupportUrl DefaultValue="__BASE_URL__/support.html"/>
+  <IconUrl DefaultValue="https://ahmetfidan58088-ctrl.github.io/excel-ai-dashboard/icons/icon-32.png"/>
+  <HighResolutionIconUrl DefaultValue="https://ahmetfidan58088-ctrl.github.io/excel-ai-dashboard/icons/icon-80.png"/>
+  <SupportUrl DefaultValue="https://ahmetfidan58088-ctrl.github.io/excel-ai-dashboard/support.html"/>
 
   <AppDomains>
-    <AppDomain>__BASE_URL__</AppDomain>
+    <AppDomain>https://ahmetfidan58088-ctrl.github.io</AppDomain>
   </AppDomains>
 
   <Hosts>
@@ -27,7 +26,7 @@
   </Hosts>
 
   <DefaultSettings>
-    <SourceLocation DefaultValue="__BASE_URL__/taskpane.html"/>
+    <SourceLocation DefaultValue="https://ahmetfidan58088-ctrl.github.io/excel-ai-dashboard/taskpane.html"/>
   </DefaultSettings>
 
   <Permissions>ReadWriteDocument</Permissions>
@@ -75,13 +74,13 @@
     </Hosts>
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon.16" DefaultValue="__BASE_URL__/icons/icon-32.png"/>
-        <bt:Image id="Icon.32" DefaultValue="__BASE_URL__/icons/icon-32.png"/>
-        <bt:Image id="Icon.80" DefaultValue="__BASE_URL__/icons/icon-80.png"/>
+        <bt:Image id="Icon.16" DefaultValue="https://ahmetfidan58088-ctrl.github.io/excel-ai-dashboard/icons/icon-32.png"/>
+        <bt:Image id="Icon.32" DefaultValue="https://ahmetfidan58088-ctrl.github.io/excel-ai-dashboard/icons/icon-32.png"/>
+        <bt:Image id="Icon.80" DefaultValue="https://ahmetfidan58088-ctrl.github.io/excel-ai-dashboard/icons/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="__BASE_URL__/support.html"/>
-        <bt:Url id="Taskpane.Url" DefaultValue="__BASE_URL__/taskpane.html"/>
+        <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://ahmetfidan58088-ctrl.github.io/excel-ai-dashboard/support.html"/>
+        <bt:Url id="Taskpane.Url" DefaultValue="https://ahmetfidan58088-ctrl.github.io/excel-ai-dashboard/taskpane.html"/>
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="GetStarted.Title" DefaultValue="AI Dashboard Online V4"/>
